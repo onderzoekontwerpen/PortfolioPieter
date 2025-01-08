@@ -340,7 +340,7 @@
 </head>
 <body>
     <div class="error-container">
-        <h1 class="error-title">404, Deze pagina bestaat niet!</h1>
+        <h1 class="error-title">404, Deze pagina bestaat niet</h1>
         <p>Oeps! Deze pagina bestaat niet.</p>
         <p>Klik op de knop om terug te gaan naar de hoofdpagina of speel ondertussen een leuke MINIGAME.</p>
         <p>Speel het spel terwijl je wacht!</p>
@@ -428,6 +428,9 @@
             };
             player.style.background = colors[gameState.selectedCharacter];
         }
+
+        // Initialiseer speler uiterlijk
+        updatePlayerAppearance();
 
         // Platform management
         function createPlatform() {
@@ -558,11 +561,7 @@
         updatePlayerAppearance();
         updateGame();
 
-        // Speler beweging
-        const playerPos = { x: 150, y: 150 };
-        const speed = 5;
-        let gameActive = true;
-
+        // Bewegingscontroles
         function movePlayer(e) {
             if (!gameActive) return;
             
@@ -585,13 +584,12 @@
                     break;
             }
             
-            updatePlayerPosition();
-        }
-
-        function updatePlayerPosition() {
             player.style.left = `${playerPos.x}px`;
             player.style.top = `${playerPos.y}px`;
         }
+
+        // Event listeners voor beweging
+        document.addEventListener('keydown', movePlayer);
 
         // Collision detection
         function checkCollisions() {
@@ -670,13 +668,8 @@
             card.textContent = card.dataset.value;
         }
 
-        // Event listeners
-        document.addEventListener('keydown', movePlayer);
-
-        // Initialisatie
-        const gameContainer = document.querySelector('.game-container');
-        const player = document.querySelector('.player');
-        updatePlayerPosition();
+        // Initialiseer coin positie
+        moveCoin();
     </script>
 </body>
 </html> 
