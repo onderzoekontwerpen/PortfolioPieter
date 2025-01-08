@@ -341,7 +341,7 @@
 <body>
     <div class="error-container">
         <h1 class="error-title">404, Deze pagina bestaat niet</h1>
-        <p>Oeps! Deze pagina bestaat niet, omdat dit leerjaar nog niet is begonnen of omdat deze pagina nog in ontwikkelings fase is!</p>
+        <p>Oeps! Deze pagina bestaat niet.</p>
         <p>Klik op de knop om terug te gaan naar de hoofdpagina of speel ondertussen een leuke MINIGAME.</p>
         <p>Speel het spel terwijl je wacht!</p>
         
@@ -494,7 +494,7 @@
             miniGame.style.display = 'block';
             
             // Memory game setup
-            const cards = ['🎮', '🎲', '��', '🎪', '🎨', '🎭', '🎪', '🎨', '🎭', '🎮', '🎲', '🎯']
+            const cards = ['🎮', '🎲', '🎯', '🎪', '🎨', '🎭', '🎪', '🎨', '🎭', '🎮', '🎲', '🎯']
                 .sort(() => Math.random() - 0.5);
             
             const grid = miniGame.querySelector('.memory-grid');
@@ -557,6 +557,126 @@
         // Start het spel
         updatePlayerAppearance();
         updateGame();
+
+        // Speler beweging
+        const playerPos = { x: 150, y: 150 };
+        const speed = 5;
+        let gameActive = true;
+
+        function movePlayer(e) {
+            if (!gameActive) return;
+            
+            switch(e.key) {
+                case 'ArrowLeft':
+                case 'a':
+                    playerPos.x = Math.max(0, playerPos.x - speed);
+                    break;
+                case 'ArrowRight':
+                case 'd':
+                    playerPos.x = Math.min(gameContainer.offsetWidth - 30, playerPos.x + speed);
+                    break;
+                case 'ArrowUp':
+                case 'w':
+                    playerPos.y = Math.max(0, playerPos.y - speed);
+                    break;
+                case 'ArrowDown':
+                case 's':
+                    playerPos.y = Math.min(gameContainer.offsetHeight - 30, playerPos.y + speed);
+                    break;
+            }
+            
+            updatePlayerPosition();
+        }
+
+        function updatePlayerPosition() {
+            player.style.left = `${playerPos.x}px`;
+            player.style.top = `${playerPos.y}px`;
+        }
+
+        // Collision detection
+        function checkCollisions() {
+            const playerBounds = player.getBoundingClientRect();
+            const coinBounds = coin.getBoundingClientRect();
+            
+            if (!(playerBounds.right < coinBounds.left || 
+                playerBounds.left > coinBounds.right || 
+                playerBounds.bottom < coinBounds.top || 
+                playerBounds.top > coinBounds.bottom)) {
+                collectCoin();
+            }
+        }
+
+        function collectCoin() {
+            score++;
+            scoreElement.textContent = score;
+            if (score > highscore) {
+                highscore = score;
+                highscoreElement.textContent = highscore;
+                localStorage.setItem('404-game-highscore', highscore);
+            }
+            moveCoin();
+        }
+
+        function moveCoin() {
+            const x = Math.random() * (gameContainer.offsetWidth - 20);
+            const y = Math.random() * (gameContainer.offsetHeight - 20);
+            coin.style.left = `${x}px`;
+            coin.style.top = `${y}px`;
+        }
+
+        function getRandomPortalPositions() {
+            return [
+                { x: Math.random() * (gameContainer.offsetWidth - 40), 
+                  y: Math.random() * (gameContainer.offsetHeight - 40) },
+                { x: Math.random() * (gameContainer.offsetWidth - 40), 
+                  y: Math.random() * (gameContainer.offsetHeight - 40) }
+            ];
+        }
+
+        function moveBossTowardsPlayer() {
+            if (!gameState.boss) return;
+            
+            const boss = gameState.boss;
+            const bossRect = boss.getBoundingClientRect();
+            const playerRect = player.getBoundingClientRect();
+            
+            const dx = playerRect.x - bossRect.x;
+            const dy = playerRect.y - bossRect.y;
+            const angle = Math.atan2(dy, dx);
+            
+            const speed = 2;
+            const newX = bossRect.x + Math.cos(angle) * speed;
+            const newY = bossRect.y + Math.sin(angle) * speed;
+            
+            boss.style.left = `${newX}px`;
+            boss.style.top = `${newY}px`;
+        }
+
+        function updateBoss() {
+            if (!gameState.boss) return;
+            moveBossTowardsPlayer();
+        }
+
+        function showAchievement(message) {
+            achievementElement.textContent = message;
+            achievementElement.style.display = 'block';
+            setTimeout(() => {
+                achievementElement.style.display = 'none';
+            }, 3000);
+        }
+
+        function flipCard(e) {
+            const card = e.target;
+            card.textContent = card.dataset.value;
+        }
+
+        // Event listeners
+        document.addEventListener('keydown', movePlayer);
+
+        // Initialisatie
+        const gameContainer = document.querySelector('.game-container');
+        const player = document.querySelector('.player');
+        updatePlayerPosition();
     </script>
 </body>
 </html> 
