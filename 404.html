@@ -340,7 +340,7 @@
 </head>
 <body>
     <div class="error-container">
-        <h1 class="error-title">404, Deze pagina bestaat niet</h1>
+        <h1 class="error-title">404, Deze pagina bestaat niet!</h1>
         <p>Oeps! Deze pagina bestaat niet.</p>
         <p>Klik op de knop om terug te gaan naar de hoofdpagina of speel ondertussen een leuke MINIGAME.</p>
         <p>Speel het spel terwijl je wacht!</p>
@@ -532,18 +532,40 @@
             gameState.level++;
             levelElement.textContent = gameState.level;
             
-            if (gameState.level % 5 === 0) {
+            // Verhoog moeilijkheidsgraad
+            speed += 0.5; // Speler wordt sneller
+            
+            // Voeg nieuwe elementen toe op basis van level
+            if (gameState.level % 5 === 0) { // Elke 5 levels
                 createBoss();
             } else {
-                createPlatform();
-                if (gameState.level % 3 === 0) {
+                if (gameState.level % 2 === 0) { // Elke 2 levels
+                    createPlatform();
+                }
+                if (gameState.level % 3 === 0) { // Elke 3 levels
                     createPortalPair();
                 }
             }
 
-            // Weather changes per level
+            // Voeg power-ups toe
+            if (gameState.level % 4 === 0) { // Elke 4 levels
+                spawnPowerUp();
+            }
+
+            // Verander weer effect
             const weathers = ['rain', 'snow', 'storm'];
             setWeather(weathers[Math.floor(Math.random() * weathers.length)]);
+            
+            // Toon level-up bericht
+            showAchievement(`Level ${gameState.level} bereikt!`);
+        }
+
+        // Functie om naar volgende level te gaan
+        function checkLevelProgress() {
+            // Ga level omhoog elke 10 punten
+            if (score > 0 && score % 10 === 0) {
+                levelUp();
+            }
         }
 
         // Game loop en collision detection
@@ -613,6 +635,7 @@
                 localStorage.setItem('404-game-highscore', highscore);
             }
             moveCoin();
+            checkLevelProgress(); // Check of we naar het volgende level gaan
         }
 
         function moveCoin() {
