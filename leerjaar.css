@@ -1,0 +1,535 @@
+/* Moderne kleuren en variabelen */
+:root {
+    --primary-color: #2563eb;
+    --secondary-color: #3b82f6;
+    --background-color: #f8fafc;
+    --text-color: #1e293b;
+    --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+/* Algemene styling updates */
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+.leerjaar-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.intro {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    color: #666;
+}
+
+.project {
+    background: white;
+    border-radius: 16px;
+    box-shadow: var(--card-shadow);
+    transition: transform 0.3s ease;
+    animation: fadeIn 0.5s ease-out;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    max-width: 1100px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.project-title {
+    font-size: 1.8rem;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.project-meta {
+    color: #666;
+    font-style: italic;
+    margin-bottom: 1.5rem;
+}
+
+.project-details ul {
+    list-style: none;
+    margin-bottom: 1.5rem;
+}
+
+.project-details li {
+    margin-bottom: 0.5rem;
+}
+
+.project-reflection h3 {
+    color: #333;
+    margin: 1.5rem 0 0.5rem 0;
+}
+
+.project-reflection p {
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.navigation {
+    text-align: center;
+    margin-top: 3rem;
+}
+
+.next-page {
+    padding: 0.8rem 1.5rem;
+    background-color: #333;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    margin-top: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.next-page:hover {
+    background-color: #555;
+}
+
+@media (max-width: 768px) {
+    .leerjaar-content {
+        padding: 1rem;
+    }
+
+    .project {
+        padding: 1rem;
+    }
+}
+
+.nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.next-project,
+.prev-project {
+    display: inline-block;
+    padding: 0.8rem 1.5rem;
+    background-color: #555;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.next-project:hover,
+.prev-project:hover {
+    background-color: #666;
+}
+
+.project-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 1rem 0;
+    transition: transform 0.3s ease;
+}
+
+.project-image:hover {
+    transform: scale(1.02);
+}
+
+.project-requirements ul {
+    list-style: disc;
+    margin-left: 1.5rem;
+}
+
+.project-info ul {
+    margin-bottom: 2rem;
+} 
+.doc-link {
+    display: inline-block;
+    color: #0066cc;
+    text-decoration: none;
+    margin: 0.5rem 0;
+}
+
+.doc-link:hover {
+    text-decoration: underline;
+}
+
+.personal-note {
+    background-color: #f9f9f9;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-top: 2rem;
+}
+
+.project-links ul {
+    list-style: none;
+    padding: 0;
+}
+
+.leerjaar2-banner {
+    position: relative;
+    width: 100%;
+    max-height: 400px;
+    overflow: hidden;
+}
+
+.banner-image {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.banner-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+    width: 100%;
+    padding: 2rem;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.banner-content h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.banner-content p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+}
+
+.back-button {
+    display: inline-block;
+    padding: 0.8rem 2rem;
+    background-color: white;
+    color: #333;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.back-button:hover {
+    background-color: #f0f0f0;
+    transform: translateY(-2px);
+}
+
+.project-header {
+    margin-bottom: 2rem;
+}
+
+.project-banner {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.technical-drawings {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.technical-drawings img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}
+
+.technical-drawings img:hover {
+    transform: scale(1.02);
+}
+
+.project-section {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 12px;
+    margin: 2rem auto;
+    box-shadow: var(--card-shadow);
+    max-width: 1000px;
+}
+
+.project-section:hover {
+    transform: translateY(-5px);
+}
+
+.project-section h2 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-fill-color: transparent;
+}
+
+.download-button {
+    background: var(--primary-color);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 0.5rem;
+}
+
+.download-button:hover {
+    background: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: var(--card-shadow);
+}
+
+.page-navigation {
+    text-align: center;
+    margin-top: 3rem;
+    padding: 2rem 0;
+}
+
+.page-numbers {
+    margin-top: 1rem;
+}
+
+.page-numbers a {
+    color: #333;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    transition: all 0.3s ease;
+}
+
+.page-numbers a:hover {
+    text-decoration: underline;
+}
+
+.photo-gallery {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.photo-gallery figure {
+    margin: 0;
+}
+
+.photo-gallery img {
+    width: 100%;
+    height: auto;
+    max-height: 300px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.photo-gallery figcaption {
+    text-align: center;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.video-container {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+    height: 0;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+    margin: 2rem 0;
+}
+
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.back-home {
+    display: inline-block;
+    margin-top: 1rem;
+    color: #333;
+    text-decoration: none;
+}
+
+.back-home:hover {
+    text-decoration: underline;
+}
+
+.project-section figure {
+    margin: 1rem 0;
+    max-width: 100%;
+}
+
+.project-section figure img {
+    width: 100%;
+    height: auto;
+    max-height: 300px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.project-section figure figcaption {
+    text-align: center;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+/* Moderne animaties */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Afbeelding hover effecten */
+.project-image, .technical-drawings img {
+    transition: transform 0.3s ease;
+}
+
+.project-image:hover, .technical-drawings img:hover {
+    transform: scale(1.02);
+}
+
+/* Moderne headers */
+h1, h2, h3 {
+    background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 1.5rem;
+}
+
+/* Voor betere leesbaarheid op brede schermen */
+p {
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.7;
+}
+
+.banner-container {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+}
+
+.project-banner {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.banner-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-align: center;
+    padding: 2rem;
+}
+
+.banner-overlay h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: white;
+}
+
+.banner-overlay p {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    max-width: 600px;
+}
+
+.banner-button {
+    display: inline-block;
+    padding: 0.8rem 2rem;
+    background-color: white;
+    color: #333;
+    text-decoration: none;
+    border-radius: 4px;
+    margin-top: 1rem;
+    transition: all 0.3s ease;
+}
+
+.banner-button:hover {
+    background-color: #f0f0f0;
+    transform: translateY(-2px);
+    box-shadow: var(--card-shadow);
+}
+
+.banner-wrapper {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    margin-bottom: 2rem;
+    overflow: hidden;
+}
+
+.banner-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.banner-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+}
+
+.banner-overlay h1 {
+    color: white;
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.banner-overlay p {
+    color: white;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    text-align: center;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.banner-button {
+    display: inline-block;
+    padding: 0.8rem 2rem;
+    background-color: white;
+    color: #333;
+    text-decoration: none;
+    border-radius: 4px;
+    margin-top: 1rem;
+    transition: all 0.3s ease;
+}
+
+.banner-button:hover {
+    background-color: #f0f0f0;
+    transform: translateY(-2px);
+    box-shadow: var(--card-shadow);
+}

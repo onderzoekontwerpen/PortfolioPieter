@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagina niet gevonden - Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="leerjaar.css">
+    <style>
+        .error-container {
+            text-align: center;
+            padding: 4rem 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .error-title {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .game-container {
+            width: 300px;
+            height: 300px;
+            margin: 2rem auto;
+            border: 2px solid var(--primary-color);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .player {
+            width: 20px;
+            height: 20px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            position: absolute;
+            transition: all 0.1s ease;
+        }
+
+        .coin {
+            width: 15px;
+            height: 15px;
+            background: gold;
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        .score {
+            margin: 1rem 0;
+            font-size: 1.5rem;
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-top: 2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <h1 class="error-title">404</h1>
+        <p>Dit schooljaar is nog niet begonnen of de pagina is nog niet toegevoegd.</p>
+        
+        <div class="game-container">
+            <div class="player"></div>
+            <div class="coin"></div>
+        </div>
+        <div class="score">Score: <span id="score">0</span></div>
+        <p>Gebruik de pijltjestoetsen om de blauwe bal te bewegen en verzamel de gouden munten!</p>
+        
+        <a href="index.html" class="back-button">Terug naar hoofdmenu</a>
+    </div>
+
+    <script>
+        const player = document.querySelector('.player');
+        const coin = document.querySelector('.coin');
+        const scoreElement = document.getElementById('score');
+        let score = 0;
+        let playerPos = { x: 150, y: 150 };
+        
+        function updatePlayerPosition() {
+            player.style.left = `${playerPos.x}px`;
+            player.style.top = `${playerPos.y}px`;
+        }
+
+        function placeCoin() {
+            const x = Math.floor(Math.random() * 280);
+            const y = Math.floor(Math.random() * 280);
+            coin.style.left = `${x}px`;
+            coin.style.top = `${y}px`;
+        }
+
+        function checkCollision() {
+            const playerRect = player.getBoundingClientRect();
+            const coinRect = coin.getBoundingClientRect();
+            
+            if (!(playerRect.right < coinRect.left || 
+                playerRect.left > coinRect.right || 
+                playerRect.bottom < coinRect.top || 
+                playerRect.top > coinRect.bottom)) {
+                score++;
+                scoreElement.textContent = score;
+                placeCoin();
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            const speed = 10;
+            switch(e.key) {
+                case 'ArrowUp':
+                    playerPos.y = Math.max(0, playerPos.y - speed);
+                    break;
+                case 'ArrowDown':
+                    playerPos.y = Math.min(280, playerPos.y + speed);
+                    break;
+                case 'ArrowLeft':
+                    playerPos.x = Math.max(0, playerPos.x - speed);
+                    break;
+                case 'ArrowRight':
+                    playerPos.x = Math.min(280, playerPos.x + speed);
+                    break;
+            }
+            updatePlayerPosition();
+            checkCollision();
+        });
+
+        // Initialize game
+        updatePlayerPosition();
+        placeCoin();
+    </script>
+</body>
+</html> 
