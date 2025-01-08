@@ -9,7 +9,7 @@
     <style>
         .error-container {
             text-align: center;
-            padding: 4rem 2rem;
+            padding: 2rem;
             max-width: 800px;
             margin: 0 auto;
         }
@@ -21,124 +21,542 @@
         }
 
         .game-container {
-            width: 300px;
-            height: 300px;
+            width: 600px;
+            height: 400px;
             margin: 2rem auto;
             border: 2px solid var(--primary-color);
             border-radius: 8px;
             position: relative;
             overflow: hidden;
+            background: #f0f9ff;
         }
 
         .player {
-            width: 20px;
-            height: 20px;
+            width: 30px;
+            height: 30px;
             background: var(--primary-color);
             border-radius: 50%;
             position: absolute;
-            transition: all 0.1s ease;
+            transition: all 0.05s ease;
+            box-shadow: 0 0 10px rgba(37, 99, 235, 0.5);
         }
 
         .coin {
-            width: 15px;
-            height: 15px;
-            background: gold;
+            width: 20px;
+            height: 20px;
+            background: #fbbf24;
             border-radius: 50%;
             position: absolute;
+            animation: coinPulse 1s infinite;
+        }
+
+        .obstacle {
+            width: 40px;
+            height: 40px;
+            background: #ef4444;
+            position: absolute;
+            border-radius: 8px;
+            animation: rotate 2s infinite linear;
+        }
+
+        .score-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 20px;
+            border-radius: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
         .score {
-            margin: 1rem 0;
             font-size: 1.5rem;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .high-score {
+            font-size: 1rem;
+            color: #666;
+        }
+
+        @keyframes coinPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
         .back-button {
             display: inline-block;
-            padding: 1rem 2rem;
+            margin-top: 2rem;
+            padding: 0.8rem 1.5rem;
             background: var(--primary-color);
             color: white;
             text-decoration: none;
             border-radius: 8px;
-            margin-top: 2rem;
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
         }
 
         .back-button:hover {
             transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+        }
+
+        .game-over {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            display: none;
+        }
+
+        .restart-button {
+            padding: 0.5rem 1rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        .power-up {
+            width: 25px;
+            height: 25px;
+            position: absolute;
+            animation: rotate 1.5s infinite linear;
+        }
+
+        .shield {
+            background: linear-gradient(45deg, #60a5fa, #3b82f6);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+        }
+
+        .speed-boost {
+            background: linear-gradient(45deg, #fbbf24, #f59e0b);
+            clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+        }
+
+        .teleporter {
+            background: linear-gradient(45deg, #8b5cf6, #6d28d9);
+            border-radius: 50%;
+            border: 2px solid #fff;
+        }
+
+        .level-indicator {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .achievement {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            display: none;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { transform: translate(-50%, 100%); }
+            to { transform: translate(-50%, 0); }
+        }
+
+        .particle-effect {
+            position: absolute;
+            pointer-events: none;
+            animation: particleBurst 0.5s forwards;
+        }
+
+        @keyframes particleBurst {
+            0% { transform: scale(0); opacity: 1; }
+            100% { transform: scale(2); opacity: 0; }
+        }
+
+        .touch-controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+        }
+
+        .touch-button {
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            user-select: none;
+        }
+
+        .character-select {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+
+        .character-option {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.2s;
+            border: 2px solid white;
+        }
+
+        .character-option:hover {
+            transform: scale(1.1);
+        }
+
+        .character-1 { background: var(--primary-color); }
+        .character-2 { background: linear-gradient(45deg, #10b981, #059669); }
+        .character-3 { background: linear-gradient(45deg, #8b5cf6, #6d28d9); }
+
+        .portal {
+            width: 40px;
+            height: 40px;
+            position: absolute;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, #8b5cf6, #6d28d9, #8b5cf6);
+            animation: portalSpin 2s linear infinite;
+        }
+
+        .platform {
+            position: absolute;
+            width: 100px;
+            height: 20px;
+            background: linear-gradient(90deg, #3b82f6, #60a5fa);
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .boss {
+            width: 80px;
+            height: 80px;
+            position: absolute;
+            background: #ef4444;
+            border-radius: 8px;
+            animation: bossFloat 2s ease-in-out infinite;
+        }
+
+        .boss-health-bar {
+            width: 100%;
+            height: 5px;
+            background: #22c55e;
+            position: absolute;
+            top: -10px;
+            border-radius: 3px;
+        }
+
+        .weather-effect {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .rain {
+            background: linear-gradient(to bottom,
+                rgba(59, 130, 246, 0) 0%,
+                rgba(59, 130, 246, 0.1) 100%);
+            animation: rainFall 0.8s linear infinite;
+        }
+
+        .snow {
+            background: radial-gradient(circle at top,
+                rgba(255, 255, 255, 0.8) 1px,
+                transparent 1px) 0 0 / 20px 20px;
+            animation: snowFall 3s linear infinite;
+        }
+
+        .storm {
+            background: transparent;
+            animation: stormFlash 5s infinite;
+        }
+
+        @keyframes portalSpin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes bossFloat {
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes rainFall {
+            to { background-position: 0 100%; }
+        }
+
+        @keyframes snowFall {
+            to { background-position: 0 100%; }
+        }
+
+        @keyframes stormFlash {
+            0%, 95%, 98% { background: transparent; }
+            96%, 99% { background: rgba(255, 255, 255, 0.2); }
+        }
+
+        .mini-game {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            display: none;
+            z-index: 100;
         }
     </style>
 </head>
 <body>
     <div class="error-container">
         <h1 class="error-title">404</h1>
-        <p>Dit schooljaar is nog niet begonnen of de pagina is nog niet toegevoegd.</p>
+        <p>Oeps! Deze pagina bestaat niet.</p>
+        <p>Klik op de knop om terug te gaan naar de hoofdpagina of speel ondertussen een leuke MINIGAME.</p>
+        <p>Speel het spel terwijl je wacht!</p>
         
         <div class="game-container">
+            <div class="character-select">
+                <div class="character-option character-1" data-character="1"></div>
+                <div class="character-option character-2" data-character="2"></div>
+                <div class="character-option character-3" data-character="3"></div>
+            </div>
+            
+            <div class="level-indicator">Level: <span id="level">1</span></div>
+            <div class="weather-effect"></div>
             <div class="player"></div>
             <div class="coin"></div>
+            
+            <div class="score-container">
+                <div class="score">Score: <span id="score">0</span></div>
+                <div class="high-score">Highscore: <span id="highscore">0</span></div>
+            </div>
+            
+            <div class="achievement" id="achievement"></div>
         </div>
-        <div class="score">Score: <span id="score">0</span></div>
-        <p>Gebruik de pijltjestoetsen om de blauwe bal te bewegen en verzamel de gouden munten!</p>
-        
-        <a href="index.html" class="back-button">Terug naar hoofdmenu</a>
+
+        <div class="mini-game" id="miniGame">
+            <h3>Memory Game</h3>
+            <div class="memory-grid"></div>
+            <button class="restart-button">Start</button>
+        </div>
+
+        <a href="index.html" class="back-button">Terug naar home</a>
     </div>
 
     <script>
+        // Game state en configuratie
+        const gameState = {
+            level: 1,
+            hasShield: false,
+            speedBoost: false,
+            achievements: new Set(),
+            powerUps: [],
+            platforms: [],
+            portals: [],
+            boss: null,
+            bossHealth: 100,
+            weather: null,
+            selectedCharacter: 1,
+            abilities: new Set(),
+            combo: {
+                active: false,
+                multiplier: 1
+            }
+        };
+
+        // DOM elementen
+        const gameContainer = document.querySelector('.game-container');
         const player = document.querySelector('.player');
         const coin = document.querySelector('.coin');
         const scoreElement = document.getElementById('score');
-        let score = 0;
+        const highscoreElement = document.getElementById('highscore');
+        const levelElement = document.getElementById('level');
+        const achievementElement = document.getElementById('achievement');
+
+        // Speler positie en game variabelen
         let playerPos = { x: 150, y: 150 };
-        
-        function updatePlayerPosition() {
-            player.style.left = `${playerPos.x}px`;
-            player.style.top = `${playerPos.y}px`;
-        }
+        let score = 0;
+        let speed = 5;
+        let gameActive = true;
+        let highscore = localStorage.getItem('404-game-highscore') || 0;
+        highscoreElement.textContent = highscore;
 
-        function placeCoin() {
-            const x = Math.floor(Math.random() * 280);
-            const y = Math.floor(Math.random() * 280);
-            coin.style.left = `${x}px`;
-            coin.style.top = `${y}px`;
-        }
-
-        function checkCollision() {
-            const playerRect = player.getBoundingClientRect();
-            const coinRect = coin.getBoundingClientRect();
-            
-            if (!(playerRect.right < coinRect.left || 
-                playerRect.left > coinRect.right || 
-                playerRect.bottom < coinRect.top || 
-                playerRect.top > coinRect.bottom)) {
-                score++;
-                scoreElement.textContent = score;
-                placeCoin();
-            }
-        }
-
-        document.addEventListener('keydown', (e) => {
-            const speed = 10;
-            switch(e.key) {
-                case 'ArrowUp':
-                    playerPos.y = Math.max(0, playerPos.y - speed);
-                    break;
-                case 'ArrowDown':
-                    playerPos.y = Math.min(280, playerPos.y + speed);
-                    break;
-                case 'ArrowLeft':
-                    playerPos.x = Math.max(0, playerPos.x - speed);
-                    break;
-                case 'ArrowRight':
-                    playerPos.x = Math.min(280, playerPos.x + speed);
-                    break;
-            }
-            updatePlayerPosition();
-            checkCollision();
+        // Karakter selectie
+        document.querySelectorAll('.character-option').forEach(option => {
+            option.addEventListener('click', () => {
+                gameState.selectedCharacter = option.dataset.character;
+                updatePlayerAppearance();
+            });
         });
 
-        // Initialize game
-        updatePlayerPosition();
-        placeCoin();
+        function updatePlayerAppearance() {
+            const colors = {
+                '1': 'var(--primary-color)',
+                '2': '#10b981',
+                '3': '#8b5cf6'
+            };
+            player.style.background = colors[gameState.selectedCharacter];
+        }
+
+        // Platform management
+        function createPlatform() {
+            const platform = document.createElement('div');
+            platform.className = 'platform';
+            const x = Math.random() * (gameContainer.offsetWidth - 100);
+            const y = Math.random() * (gameContainer.offsetHeight - 20);
+            platform.style.left = `${x}px`;
+            platform.style.top = `${y}px`;
+            gameContainer.appendChild(platform);
+            gameState.platforms.push(platform);
+        }
+
+        // Portal systeem
+        function createPortalPair() {
+            const portal1 = document.createElement('div');
+            const portal2 = document.createElement('div');
+            portal1.className = portal2.className = 'portal';
+            
+            const positions = getRandomPortalPositions();
+            portal1.style.left = `${positions[0].x}px`;
+            portal1.style.top = `${positions[0].y}px`;
+            portal2.style.left = `${positions[1].x}px`;
+            portal2.style.top = `${positions[1].y}px`;
+            
+            gameContainer.appendChild(portal1);
+            gameContainer.appendChild(portal2);
+            gameState.portals = [portal1, portal2];
+        }
+
+        // Boss battle systeem
+        function createBoss() {
+            const boss = document.createElement('div');
+            boss.className = 'boss';
+            boss.innerHTML = '<div class="boss-health-bar"></div>';
+            gameContainer.appendChild(boss);
+            gameState.boss = boss;
+            gameState.bossHealth = 100;
+            
+            // Boss AI
+            const bossInterval = setInterval(() => {
+                if (!gameActive) {
+                    clearInterval(bossInterval);
+                    return;
+                }
+                moveBossTowardsPlayer();
+            }, 50);
+        }
+
+        // Weather effects
+        function setWeather(type) {
+            if (gameState.weather) {
+                gameState.weather.remove();
+            }
+            const weather = document.createElement('div');
+            weather.className = `weather-effect ${type}`;
+            gameContainer.appendChild(weather);
+            gameState.weather = weather;
+        }
+
+        // Mini-game systeem
+        function startMiniGame() {
+            const miniGame = document.getElementById('miniGame');
+            miniGame.style.display = 'block';
+            
+            // Memory game setup
+            const cards = ['🎮', '🎲', '��', '🎪', '🎨', '🎭', '🎪', '🎨', '🎭', '🎮', '🎲', '🎯']
+                .sort(() => Math.random() - 0.5);
+            
+            const grid = miniGame.querySelector('.memory-grid');
+            grid.innerHTML = '';
+            cards.forEach(card => {
+                const div = document.createElement('div');
+                div.className = 'memory-card';
+                div.dataset.value = card;
+                div.addEventListener('click', flipCard);
+                grid.appendChild(div);
+            });
+        }
+
+        // Achievement systeem
+        function checkAchievements() {
+            const achievements = {
+                speedrunner: { condition: () => score >= 10, message: 'Speedrunner: 10 munten verzameld!' },
+                survivor: { condition: () => gameState.level >= 5, message: 'Survivor: Level 5 bereikt!' },
+                collector: { condition: () => score >= 50, message: 'Collector: 50 munten verzameld!' }
+            };
+
+            Object.entries(achievements).forEach(([key, achievement]) => {
+                if (achievement.condition() && !gameState.achievements.has(key)) {
+                    showAchievement(achievement.message);
+                    gameState.achievements.add(key);
+                }
+            });
+        }
+
+        // Level progression
+        function levelUp() {
+            gameState.level++;
+            levelElement.textContent = gameState.level;
+            
+            if (gameState.level % 5 === 0) {
+                createBoss();
+            } else {
+                createPlatform();
+                if (gameState.level % 3 === 0) {
+                    createPortalPair();
+                }
+            }
+
+            // Weather changes per level
+            const weathers = ['rain', 'snow', 'storm'];
+            setWeather(weathers[Math.floor(Math.random() * weathers.length)]);
+        }
+
+        // Game loop en collision detection
+        function updateGame() {
+            if (!gameActive) return;
+            
+            checkCollisions();
+            checkAchievements();
+            updateBoss();
+            
+            requestAnimationFrame(updateGame);
+        }
+
+        // Start het spel
+        updatePlayerAppearance();
+        updateGame();
     </script>
 </body>
 </html> 
