@@ -748,27 +748,20 @@
         // Game loop en collision detection
         function updateGame() {
             if (!gameActive) return;
-            
             checkCollisions();
             checkAchievements();
-            updateBoss();
-            
             requestAnimationFrame(updateGame);
         }
 
         // Start het spel
-        updatePlayerAppearance();
         updateGame();
 
         // Bewegingscontroles
         function movePlayer(e) {
             if (!gameActive) return;
             
-            let moveAmount = speed;
-            if (gameState.isSlippery) {
-                moveAmount *= 1.5;
-            }
-
+            const moveAmount = gameState.isSlippery ? speed * 1.5 : speed;
+            
             switch(e.key) {
                 case 'ArrowLeft':
                 case 'a':
@@ -790,6 +783,8 @@
             
             player.style.left = `${playerPos.x}px`;
             player.style.top = `${playerPos.y}px`;
+            
+            checkCollisions();
         }
 
         // Event listeners voor beweging
