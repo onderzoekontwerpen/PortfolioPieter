@@ -938,6 +938,45 @@
                 animateParticle(particle, velocity);
             }
         }
+
+        // Toetsenbord besturing
+        document.addEventListener('keydown', (e) => {
+            if (!gameActive) return;
+            
+            const speed = 5;
+            const currentX = parseInt(player.style.left) || 0;
+            const currentY = parseInt(player.style.top) || 0;
+            
+            switch(e.key.toLowerCase()) {
+                case 'arrowleft':
+                case 'a':
+                    player.style.left = `${Math.max(0, currentX - speed)}px`;
+                    break;
+                case 'arrowright':
+                case 'd':
+                    player.style.left = `${Math.min(gameContainer.offsetWidth - 30, currentX + speed)}px`;
+                    break;
+                case 'arrowup':
+                case 'w':
+                    player.style.top = `${Math.max(0, currentY - speed)}px`;
+                    break;
+                case 'arrowdown':
+                case 's':
+                    player.style.top = `${Math.min(gameContainer.offsetHeight - 30, currentY + speed)}px`;
+                    break;
+            }
+            
+            playerPos = {
+                x: parseInt(player.style.left) || 0,
+                y: parseInt(player.style.top) || 0
+            };
+            
+            checkCollision();
+        });
+
+        // Initiële speler positie
+        player.style.left = '285px';  // Midden van container (600/2 - 30/2)
+        player.style.top = '185px';   // Midden van container (400/2 - 30/2)
     </script>
 </body>
 </html> 
