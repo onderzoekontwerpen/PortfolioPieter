@@ -259,12 +259,13 @@
         }
 
         .boss {
-            width: 80px;
-            height: 80px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(45deg, #ef4444, #dc2626);
             position: absolute;
-            background: #ef4444;
             border-radius: 8px;
-            animation: bossFloat 2s ease-in-out infinite;
+            transform: rotate(45deg);
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
         }
 
         .boss-health-bar {
@@ -356,6 +357,73 @@
             font-size: 1.2rem;
             margin-top: 1rem;
         }
+
+        .health-bar-container {
+            position: absolute;
+            top: 60px;
+            left: 20px;
+            width: 150px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 3px;
+        }
+
+        .health-bar {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, #22c55e, #4ade80);
+            border-radius: 8px;
+            transition: width 0.3s ease;
+        }
+
+        .health-text {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            color: #1e293b;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .night-mode {
+            background: #1a237e;
+            transition: background 1s ease;
+        }
+
+        .slippery {
+            transition: all 0.3s ease-out;
+        }
+
+        .coin-particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: gold;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        .bullet {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #ef4444;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .combo-active {
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
     </style>
 </head>
 <body>
@@ -391,6 +459,11 @@
                 </div>
                 
                 <div class="achievement" id="achievement"></div>
+
+                <div class="health-bar-container">
+                    <div class="health-bar" id="healthBar"></div>
+                    <span class="health-text">HP: <span id="healthText">100</span></span>
+                </div>
             </div>
 
             <div class="mini-game" id="miniGame">
@@ -420,8 +493,24 @@
             abilities: new Set(),
             combo: {
                 active: false,
-                multiplier: 1
+                multiplier: 1,
+                duration: 5000
+            },
+            health: 100,
+            isSlippery: false,
+            powerShot: false,
+            shield: {
+                active: false,
+                durability: 3
             }
+        };
+
+        // Nieuwe power-up types
+        const powerUpTypes = {
+            SHIELD: 'shield',
+            SPEED: 'speed-boost',
+            POWER_SHOT: 'power-shot',
+            COMBO: 'combo'
         };
 
         // DOM elementen
@@ -499,14 +588,49 @@
             gameState.boss = boss;
             gameState.bossHealth = 100;
             
-            // Boss AI
+            // Boss aanvalspatronen
+            const attacks = ['charge', 'spiral', 'bulletHell'];
+            let currentAttack = 0;
+            
             const bossInterval = setInterval(() => {
                 if (!gameActive) {
                     clearInterval(bossInterval);
                     return;
                 }
-                moveBossTowardsPlayer();
-            }, 50);
+                
+                // Wissel aanvalspatronen
+                const attack = attacks[currentAttack];
+                executeBossAttack(attack);
+                currentAttack = (currentAttack + 1) % attacks.length;
+                
+            }, 3000);
+        }
+
+        // Boss aanvalspatronen
+        function executeBossAttack(type) {
+            switch(type) {
+                case 'charge':
+                    bossChargeAttack();
+                    break;
+                case 'spiral':
+                    bossSpitalAttack();
+                    break;
+                case 'bulletHell':
+                    bossBulletHellAttack();
+                    break;
+            }
+        }
+
+        // Combo systeem
+        function activateCombo() {
+            gameState.combo.active = true;
+            gameState.combo.multiplier = 2;
+            showAchievement('2x Combo Activated!');
+            
+            setTimeout(() => {
+                gameState.combo.active = false;
+                gameState.combo.multiplier = 1;
+            }, gameState.combo.duration);
         }
 
         // Weather effects
@@ -518,6 +642,14 @@
             weather.className = `weather-effect ${type}`;
             gameContainer.appendChild(weather);
             gameState.weather = weather;
+
+            if (type === 'snow') {
+                gameContainer.classList.add('night-mode');
+                gameState.isSlippery = true;
+            } else {
+                gameContainer.classList.remove('night-mode');
+                gameState.isSlippery = false;
+            }
         }
 
         // Mini-game systeem
@@ -632,22 +764,27 @@
         function movePlayer(e) {
             if (!gameActive) return;
             
+            let moveAmount = speed;
+            if (gameState.isSlippery) {
+                moveAmount *= 1.5;
+            }
+
             switch(e.key) {
                 case 'ArrowLeft':
                 case 'a':
-                    playerPos.x = Math.max(0, playerPos.x - speed);
+                    playerPos.x = Math.max(0, playerPos.x - moveAmount);
                     break;
                 case 'ArrowRight':
                 case 'd':
-                    playerPos.x = Math.min(gameContainer.offsetWidth - 30, playerPos.x + speed);
+                    playerPos.x = Math.min(gameContainer.offsetWidth - 30, playerPos.x + moveAmount);
                     break;
                 case 'ArrowUp':
                 case 'w':
-                    playerPos.y = Math.max(0, playerPos.y - speed);
+                    playerPos.y = Math.max(0, playerPos.y - moveAmount);
                     break;
                 case 'ArrowDown':
                 case 's':
-                    playerPos.y = Math.min(gameContainer.offsetHeight - 30, playerPos.y + speed);
+                    playerPos.y = Math.min(gameContainer.offsetHeight - 30, playerPos.y + moveAmount);
                     break;
             }
             
@@ -669,10 +806,30 @@
                 playerBounds.top > coinBounds.bottom)) {
                 collectCoin();
             }
+
+            if (gameState.boss) {
+                const bossRect = gameState.boss.getBoundingClientRect();
+                const playerRect = player.getBoundingClientRect();
+
+                if (!(playerRect.right < bossRect.left || 
+                    playerRect.left > bossRect.right || 
+                    playerRect.bottom < bossRect.top || 
+                    playerRect.top > bossRect.bottom)) {
+                    takeDamage(10);
+                }
+            }
         }
 
         function collectCoin() {
-            score++;
+            let points = 1;
+            if (gameState.combo.active) {
+                points *= gameState.combo.multiplier;
+            }
+            score += points;
+            
+            // Particle effect bij coin collectie
+            createCoinParticles();
+            
             scoreElement.textContent = score;
             if (score > highscore) {
                 highscore = score;
@@ -680,7 +837,7 @@
                 localStorage.setItem('404-game-highscore', highscore);
             }
             moveCoin();
-            checkLevelProgress(); // Check of we naar het volgende level gaan
+            checkLevelProgress();
         }
 
         function moveCoin() {
@@ -744,6 +901,47 @@
             document.getElementById('gameScreen').style.display = 'block';
             gameActive = true;
             updateGame();
+        }
+
+        function takeDamage(amount) {
+            gameState.health = Math.max(0, gameState.health - amount);
+            const healthBar = document.getElementById('healthBar');
+            const healthText = document.getElementById('healthText');
+            
+            healthBar.style.width = `${gameState.health}%`;
+            healthText.textContent = gameState.health;
+
+            if (gameState.health <= 0) {
+                gameOver();
+            }
+        }
+
+        function gameOver() {
+            gameActive = false;
+            showAchievement('Game Over! Klik op StartSpel om opnieuw te beginnen');
+            setTimeout(() => {
+                document.getElementById('startScreen').style.display = 'block';
+                document.getElementById('gameScreen').style.display = 'none';
+            }, 2000);
+        }
+
+        // Particle effects
+        function createCoinParticles() {
+            for (let i = 0; i < 8; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'coin-particle';
+                particle.style.left = `${playerPos.x}px`;
+                particle.style.top = `${playerPos.y}px`;
+                
+                const angle = (i / 8) * Math.PI * 2;
+                const velocity = {
+                    x: Math.cos(angle) * 5,
+                    y: Math.sin(angle) * 5
+                };
+                
+                gameContainer.appendChild(particle);
+                animateParticle(particle, velocity);
+            }
         }
     </script>
 </body>
