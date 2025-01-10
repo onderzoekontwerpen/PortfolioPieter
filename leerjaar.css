@@ -1,10 +1,21 @@
 /* Moderne kleuren en variabelen */
 :root {
+    /* Light theme (default) */
     --primary-color: #2563eb;
     --secondary-color: #3b82f6;
     --background-color: #f8fafc;
     --text-color: #1e293b;
-    --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --card-bg: white;
+    --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+[data-theme="dark"] {
+    --primary-color: #60a5fa;
+    --secondary-color: #93c5fd;
+    --background-color: #1e293b;
+    --text-color: #f8fafc;
+    --card-bg: #334155;
+    --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.3);
 }
 
 /* Algemene styling updates */
@@ -26,16 +37,21 @@ body {
 }
 
 .project {
-    background: white;
+    background: var(--card-bg);
+    transform-style: preserve-3d;
+    transition: all 0.3s ease;
     border-radius: 16px;
     box-shadow: var(--card-shadow);
-    transition: transform 0.3s ease;
-    animation: fadeIn 0.5s ease-out;
     padding: 2rem;
     margin-bottom: 2rem;
     max-width: 1100px;
     margin-left: auto;
     margin-right: auto;
+}
+
+.project:hover {
+    transform: translateY(-5px) rotateX(2deg);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.15);
 }
 
 .project-title {
@@ -580,4 +596,135 @@ figcaption {
     margin-top: 8px;
     font-size: 0.9em;
     color: #666;
+}
+
+/* Theme toggle button */
+.theme-toggle {
+    background: none;
+    border: 2px solid var(--primary-color);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    margin-right: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+[data-theme="dark"] .light-icon,
+[data-theme="light"] .dark-icon {
+    display: none;
+}
+
+/* Skill badges */
+.skill-section {
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+    margin: 2rem 0;
+}
+
+.skill-badge {
+    margin: 1.5rem 0;
+}
+
+.skill-name {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.skill-bar {
+    height: 10px;
+    background: rgba(0,0,0,0.1);
+    border-radius: 5px;
+    overflow: hidden;
+    margin-top: 0.5rem;
+}
+
+.skill-progress {
+    width: 0;
+    height: 100%;
+    background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+    transition: width 1s ease-in-out;
+}
+
+/* Smooth scroll behavior */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Timeline styling */
+.timeline {
+    position: relative;
+    padding: 2rem 0;
+    margin: 2rem 0;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    width: 2px;
+    height: 100%;
+    background: var(--primary-color);
+}
+
+.timeline-item {
+    display: flex;
+    margin: 2rem 0;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.5s forwards;
+}
+
+/* Floating Action Button */
+.fab {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    transition: transform 0.3s;
+}
+
+.fab:hover {
+    transform: translateY(-3px);
+}
+
+/* Filter systeem */
+.filter-buttons {
+    display: flex;
+    gap: 1rem;
+    margin: 2rem 0;
+    justify-content: center;
+}
+
+.filter-btn {
+    padding: 0.5rem 1.5rem;
+    border: 2px solid var(--primary-color);
+    border-radius: 20px;
+    background: none;
+    color: var(--text-color);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.filter-btn.active {
+    background: var(--primary-color);
+    color: white;
 }
