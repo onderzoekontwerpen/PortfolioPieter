@@ -195,5 +195,25 @@
     </footer>
 
     <script src="script.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Selecteer alle skill-progress elementen
+        const skillBars = document.querySelectorAll('.skill-progress');
+        
+        // Voor elke skill bar
+        skillBars.forEach(bar => {
+            // Haal het percentage op uit het data-progress attribuut
+            const progress = bar.getAttribute('data-progress');
+            
+            // Zet de breedte op 0 eerst (voor de animatie)
+            bar.style.width = '0';
+            
+            // Na een korte vertraging, zet de breedte op het juiste percentage
+            setTimeout(() => {
+                bar.style.width = progress;
+            }, 300);
+        });
+    });
+    </script>
 </body>
 </html> 
