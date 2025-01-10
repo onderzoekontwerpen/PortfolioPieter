@@ -131,3 +131,13 @@ document.addEventListener('DOMContentLoaded', () => {
     initProjectFilter();
     initParticles();
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    const skillBars = document.querySelectorAll('.skill-progress');
+    skillBars.forEach(bar => {
+        const progress = bar.getAttribute('data-progress');
+        setTimeout(() => {
+            bar.style.width = progress;
+        }, 500);
+    });
+});
