@@ -79,7 +79,7 @@ footer {
 }
 
 .footer-logo {
-    max-width: 200px;
+    max-width: 400px;
 }
 
 @media (max-width: 768px) {
@@ -164,7 +164,7 @@ body {
 }
 
 .animate-text {
-    animation: fadeIn 1s ease-out 0.3s both;
+    animation: fadeIn 2s ease-out 0.5s both;
 }
 
 .portfolio-grid {
@@ -246,7 +246,7 @@ body {
 .carousel-track {
     display: flex;
     flex-direction: column;
-    animation: scrollCarousel 20s linear infinite;
+    animation: scrollCarousel 25s linear infinite;
 }
 
 .carousel-track img {
