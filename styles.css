@@ -440,16 +440,11 @@ body {
 
 /* Floating animation for cards */
 .portfolio-card {
-    animation: float 6s ease-in-out infinite;
+    transform: translateY(0);
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.5s ease;
 }
 
-.portfolio-card:nth-child(2) {
-    animation-delay: 0.2s;
-}
 
-.portfolio-card:nth-child(3) {
-    animation-delay: 0.4s;
-}
 
 /* Glowing effect */
 .portfolio-card::after {
@@ -523,7 +518,8 @@ body {
 /* Enhanced hero section */
 .hero {
     position: relative;
-    background: radial-gradient(circle at center, var(--surface) 0%, var(--background) 100%);
+    background: linear-gradient(to bottom, var(--surface) 0%, var(--background) 100%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .hero::before {
