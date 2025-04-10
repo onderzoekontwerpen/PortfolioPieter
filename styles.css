@@ -31,6 +31,12 @@ body {
     overflow-x: hidden;
 }
 
+main {
+    background: var(--gradient-surface);
+    min-height: 100vh;
+    position: relative;
+}
+
 header {
     background-color: #fff;
     padding: 1rem;
@@ -229,22 +235,26 @@ body {
 
 .portfolio-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    max-width: 1200px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3rem;
+    max-width: 1400px;
     margin: 0 auto;
-    padding: 2rem;
+    padding: 4rem;
+    position: relative;
+    z-index: 1;
 }
 
 .portfolio-card {
-    background: white;
-    border-radius: 8px;
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
     overflow: hidden;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    transition: transform 0.3s ease;
+    box-shadow: var(--card-shadow);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     height: 100%;
     display: flex;
     flex-direction: column;
+    position: relative;
+    aspect-ratio: 1;
 }
 
 .portfolio-card:hover {
@@ -264,16 +274,32 @@ body {
 }
 
 .card-content {
-    padding: 1.5rem;
+    padding: 2rem;
     flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    background: linear-gradient(to bottom, transparent, var(--card-bg));
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    transform: translateY(70%);
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.portfolio-card:hover .card-content {
+    transform: translateY(0);
 }
 
 .card-content h2 {
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 }
 
 .card-content p {
@@ -440,8 +466,32 @@ body {
 
 /* Floating animation for cards */
 .portfolio-card {
+    position: relative;
     transform: translateY(0);
-    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.5s ease;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    aspect-ratio: 1;
+}
+
+.portfolio-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--gradient);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    z-index: 1;
+}
+
+.portfolio-card:hover::before {
+    opacity: 0.1;
+}
+
+.portfolio-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
 }
 
 
@@ -518,8 +568,15 @@ body {
 /* Enhanced hero section */
 .hero {
     position: relative;
-    background: linear-gradient(to bottom, var(--surface) 0%, var(--background) 100%);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: var(--gradient-surface);
+    padding: 4rem;
+    box-sizing: border-box;
+    text-align: center;
 }
 
 .hero::before {

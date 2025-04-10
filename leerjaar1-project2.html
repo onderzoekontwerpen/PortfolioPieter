@@ -24,11 +24,25 @@
     </header>
 
     <main class="leerjaar-content">
-        <article class="project">
-            <h1 class="project-title">A.I.</h1>
-            <div class="project-meta">
-                <p>Pieter Oosterling, VT1c, 18-feb-2023</p>
+        <section class="project-hero">
+            <div class="hero-content">
+                <h1 class="project-title">A.I.</h1>
+                <div class="project-meta">
+                    <p>Pieter Oosterling, VT1c, 18-feb-2023</p>
+                </div>
+                <div class="scroll-indicator">
+                    <div class="mouse">
+                        <div class="wheel"></div>
+                    </div>
+                    <div class="arrow"></div>
+                </div>
             </div>
+            <div class="hero-image">
+                <img src="images/ai-robot.jpg" alt="AI Robot XAAR" class="project-hero-image">
+            </div>
+        </section>
+
+        <article class="project">
 
             <div class="project-details">
                 <div class="project-info">
@@ -70,19 +84,34 @@
                     </ul>
                 </div>
 
-                <div class="project-images">
-                    <h2>Eindproduct</h2>
-                    <img src="images/ai-robot.jpg" alt="AI Robot XAAR" class="project-image">
+                <div class="project-gallery">
+                    <h2>Project Galerij</h2>
+                    <div class="gallery-grid">
+                        <div class="gallery-item">
+                            <img src="images/ai-robot.jpg" alt="AI Robot XAAR" class="gallery-image">
+                        </div>
+                        <!-- Add more gallery items here when you have more images -->
+                    </div>
                 </div>
             </div>
         </article>
 
-        <div class="navigation">
-            <div class="nav-buttons">
-                <a href="leerjaar1.html" class="prev-project">← Terug naar Project 1</a>
-                <a href="leerjaar1-project3.html" class="next-project">Project 3: Mosquito Alert →</a>
-            </div>
-        </div>
+        <nav class="project-navigation">
+            <a href="leerjaar1.html" class="nav-item prev">
+                <span class="nav-arrow">←</span>
+                <div class="nav-content">
+                    <span class="nav-label">Vorig Project</span>
+                    <span class="nav-title">Project 1</span>
+                </div>
+            </a>
+            <a href="leerjaar1-project3.html" class="nav-item next">
+                <div class="nav-content">
+                    <span class="nav-label">Volgend Project</span>
+                    <span class="nav-title">Mosquito Alert</span>
+                </div>
+                <span class="nav-arrow">→</span>
+            </a>
+        </nav>
     </main>
 
     <footer>
